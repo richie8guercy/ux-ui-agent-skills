@@ -1,0 +1,1038 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Agogo Store: clean beauty and daily wellness</title>
+<meta name="description" content="Home page redesign for Agogo Store: clean skincare, joyful makeup and wellness rituals, with the catalog one tap from the first screen." />
+<link rel="stylesheet" href="theme.css" />
+<script>
+  try {
+    var saved = localStorage.getItem('agogo-theme');
+    if (saved === 'dark' || saved === 'light') document.documentElement.setAttribute('data-theme', saved);
+    else if (window.matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.setAttribute('data-theme', 'dark');
+  } catch (e) {}
+</script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  * { margin: 0; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    background: var(--color-surface-page); color: var(--color-text-primary);
+    font-family: var(--font-sans); font-size: var(--text-base); line-height: var(--leading-normal);
+  }
+  img, svg { display: block; max-inline-size: 100%; }
+  a { color: var(--color-text-link); }
+  button, input { font: inherit; color: inherit; }
+  .sr-only {
+    position: absolute; inline-size: 1px; block-size: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+  .wrap { inline-size: 100%; max-inline-size: var(--size-container); margin-inline: auto; padding-inline: var(--gutter); }
+  .icon { inline-size: var(--size-icon-md); block-size: var(--size-icon-md); flex: none; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+  .icon-sm { inline-size: var(--size-icon-sm); block-size: var(--size-icon-sm); }
+  .icon-xs { inline-size: var(--size-icon-xs); block-size: var(--size-icon-xs); }
+  :focus-visible { outline: none; box-shadow: var(--shadow-focus-ring); }
+
+  .skip {
+    position: absolute; inset-inline-start: var(--space-4); inset-block-start: var(--space-2); z-index: 100;
+    padding: var(--space-2) var(--space-4); border-radius: var(--radius-sm);
+    background: var(--color-band-bg); color: var(--color-band-text); transform: translateY(-200%);
+  }
+  .skip:focus-visible { transform: none; }
+
+  /* Buttons. Primary is the one affirmative action per region; secondary is an outline. */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+    min-block-size: var(--size-control-md); padding: 0 var(--space-5);
+    border: var(--border-width-thin) solid transparent; border-radius: var(--radius-full);
+    font-weight: var(--weight-semibold); font-size: var(--text-base); text-decoration: none; cursor: pointer;
+    transition: background-color var(--transition-micro), border-color var(--transition-micro), color var(--transition-micro);
+  }
+  .btn-lg { min-block-size: var(--size-control-lg); padding: 0 var(--space-6); font-size: var(--text-lg); }
+  .btn-primary { background: var(--color-action-primary); color: var(--color-text-on-action); }
+  .btn-primary:hover { background: var(--color-action-primary-hover); }
+  .btn-primary:active { background: var(--color-action-primary-active); }
+  .btn-secondary { background: transparent; color: var(--color-text-primary); border-color: var(--color-border-strong); }
+  .btn-secondary:hover { background: var(--color-interactive-hover-bg); }
+  .btn-secondary:active { background: var(--color-interactive-active-bg); }
+  .btn[disabled], .btn[aria-disabled="true"] { opacity: var(--opacity-disabled); pointer-events: none; }
+  .link-arrow {
+    display: inline-flex; align-items: center; gap: var(--space-1); min-block-size: var(--size-control-sm);
+    font-weight: var(--weight-semibold); text-decoration: underline; text-underline-offset: 0.25em;
+    text-decoration-thickness: var(--border-width-thin); border-radius: var(--radius-sm);
+  }
+  .link-arrow:hover { text-decoration-thickness: var(--border-width-medium); }
+  .link-arrow:active { color: var(--color-text-accent); }
+
+  /* Header */
+  .site-header {
+    position: sticky; inset-block-start: 0; z-index: var(--z-header);
+    background: var(--color-surface-page); border-block-end: var(--border-width-thin) solid var(--color-border-default);
+  }
+  .bar {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "logo tools" "search search";
+    align-items: center; gap: var(--space-3) var(--space-4); padding-block: var(--space-3);
+  }
+  .logo { grid-area: logo; display: inline-flex; align-items: center; gap: var(--space-2); justify-self: start; text-decoration: none; border-radius: var(--radius-sm); min-block-size: var(--size-control-md); }
+  .logo-mark { inline-size: var(--size-mark); block-size: var(--size-mark); }
+  .logo-word { font-family: var(--font-sans); font-weight: var(--weight-bold); font-size: var(--text-xl); letter-spacing: var(--tracking-display); line-height: 1; }
+  .logo-word small { display: block; font-size: var(--text-xs); font-weight: var(--weight-semibold); letter-spacing: var(--tracking-caps); text-transform: uppercase; color: var(--color-text-accent); margin-block-start: var(--space-1); }
+  .tools { grid-area: tools; display: flex; align-items: center; gap: var(--space-1); }
+  .icon-btn {
+    position: relative; display: inline-grid; place-items: center;
+    inline-size: var(--size-control-md); block-size: var(--size-control-md);
+    border: 0; border-radius: var(--radius-full); background: transparent; color: var(--color-text-primary);
+    cursor: pointer; text-decoration: none; transition: background-color var(--transition-micro);
+  }
+  .icon-btn:hover { background: var(--color-interactive-hover-bg); }
+  .icon-btn:active { background: var(--color-interactive-active-bg); }
+  .count {
+    position: absolute; inset-block-start: var(--space-0-5); inset-inline-end: var(--space-0-5);
+    min-inline-size: var(--size-badge); block-size: var(--size-badge); padding-inline: var(--space-1);
+    display: grid; place-items: center; border-radius: var(--radius-full);
+    background: var(--color-action-primary); color: var(--color-text-on-action);
+    font-size: var(--text-xs); font-weight: var(--weight-bold); line-height: 1;
+  }
+  .count[hidden] { display: none; }
+  .theme-btn .i-sun { display: none; }
+  :root[data-theme="dark"] .theme-btn .i-sun { display: block; }
+  :root[data-theme="dark"] .theme-btn .i-moon { display: none; }
+
+  .search { grid-area: search; position: relative; display: flex; align-items: center; min-inline-size: 0; }
+  .search input {
+    inline-size: 100%; min-inline-size: 0; block-size: var(--size-control-md);
+    padding-inline: var(--space-10) var(--space-12);
+    border: var(--border-width-thin) solid var(--color-border-strong); border-radius: var(--radius-full);
+    background: var(--color-surface-card); color: var(--color-text-primary);
+    transition: border-color var(--transition-micro);
+  }
+  .search input::placeholder { color: var(--color-text-secondary); }
+  .search input:hover { border-color: var(--color-text-primary); }
+  .search input:focus-visible { border-color: var(--color-text-primary); }
+  .search .lead-icon { position: absolute; inset-inline-start: var(--space-4); color: var(--color-text-secondary); pointer-events: none; }
+  .search .go { position: absolute; inset-inline-end: var(--space-1); inline-size: var(--size-control-sm); block-size: var(--size-control-sm); }
+
+  .cats { border-block-start: var(--border-width-thin) solid var(--color-border-default); }
+  .cats-scroll { position: relative; }
+  .cats ul {
+    list-style: none; display: flex; gap: var(--space-1); padding: var(--space-2) 0;
+    overflow-x: auto; scrollbar-width: none; scroll-snap-type: x proximity;
+  }
+  .cats ul::-webkit-scrollbar { display: none; }
+  .cats-scroll::after {
+    content: ""; position: absolute; inset-block: 0; inset-inline-end: 0; inline-size: var(--space-8); pointer-events: none;
+    background: linear-gradient(to left, var(--color-surface-page), transparent);
+  }
+  .cats a {
+    display: inline-flex; align-items: center; min-block-size: var(--size-control-sm); padding-inline: var(--space-3);
+    border-radius: var(--radius-full); white-space: nowrap; text-decoration: none;
+    font-weight: var(--weight-medium); font-size: var(--text-sm); scroll-snap-align: start;
+    transition: background-color var(--transition-micro);
+  }
+  .cats a:hover { background: var(--color-interactive-hover-bg); }
+  .cats a:active { background: var(--color-interactive-active-bg); }
+  .cats a[aria-current="page"] { background: var(--color-interactive-selected-bg); color: var(--color-interactive-selected-text); }
+  .cats .sep { inline-size: var(--border-width-thin); background: var(--color-border-default); margin-inline: var(--space-2); flex: none; }
+
+  @media (min-width: 48rem) {
+    .bar { grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "logo search tools"; gap: var(--space-8); }
+    .search { max-inline-size: var(--size-search); justify-self: center; inline-size: 100%; }
+    .tools { gap: var(--space-2); }
+    .cats-scroll::after { display: none; }
+    .cats a { font-size: var(--text-base); }
+  }
+
+  /* Hero: the headline and the featured ritual share the first screen. */
+  .hero { padding-block: var(--space-8) var(--space-12); }
+  .hero-grid { display: grid; gap: var(--space-8); grid-template-columns: minmax(0, 1fr); }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: var(--space-2);
+    font-size: var(--text-sm); font-weight: var(--weight-semibold); letter-spacing: var(--tracking-caps); text-transform: uppercase;
+    color: var(--color-text-accent);
+  }
+  .hero h1 {
+    margin-block-start: var(--space-4);
+    font-family: var(--font-display); font-weight: var(--weight-regular);
+    font-size: var(--text-display); line-height: var(--leading-display); letter-spacing: var(--tracking-display);
+    max-inline-size: 14ch; text-wrap: balance;
+  }
+  .hero h1 em { font-style: italic; color: var(--color-text-accent); }
+  .lede { margin-block-start: var(--space-5); max-inline-size: 44ch; font-size: var(--text-lg); color: var(--color-text-secondary); }
+  .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-6); margin-block-start: var(--space-8); }
+  .proof {
+    list-style: none; padding: var(--space-5) 0 0; margin-block-start: var(--space-8);
+    display: flex; flex-wrap: wrap; gap: var(--space-3) var(--space-6);
+    border-block-start: var(--border-width-thin) solid var(--color-border-default);
+    font-size: var(--text-sm); color: var(--color-text-secondary);
+  }
+  .proof li { display: inline-flex; align-items: center; gap: var(--space-2); }
+  .proof li > span:last-child { min-inline-size: 0; }
+  .proof strong { color: var(--color-text-primary); font-weight: var(--weight-semibold); }
+  .stars { display: inline-flex; gap: var(--space-0-5); color: var(--color-rating); }
+  .stars .icon { fill: currentColor; stroke: none; }
+
+  .feature {
+    position: relative; display: grid; grid-template-rows: auto auto; gap: var(--space-4);
+    padding: var(--space-5); border-radius: var(--radius-xl); background: var(--tile-blush); color: var(--color-text-on-tile);
+    overflow: hidden; min-inline-size: 0;
+  }
+  .feature-stage { display: flex; align-items: flex-end; justify-content: center; gap: var(--space-2); padding-block: var(--space-6) var(--space-2); }
+  .feature-stage .pack { inline-size: var(--size-pack-hero); block-size: auto; }
+  .feature-stage .pack.sm { inline-size: calc(var(--size-pack-hero) * 0.7); }
+  .feature-tag {
+    position: absolute; inset-block-start: var(--space-4); inset-inline-start: var(--space-4);
+    padding: var(--space-1) var(--space-3); border-radius: var(--radius-full);
+    background: var(--color-tile-label-bg); font-size: var(--text-sm); font-weight: var(--weight-semibold);
+  }
+  .feature-card {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: var(--space-2) var(--space-4);
+    padding: var(--space-4) var(--space-5); border-radius: var(--radius-lg); background: var(--color-tile-label-bg);
+  }
+  .feature-card h2 { font-family: var(--font-display); font-size: var(--text-2xl); font-weight: var(--weight-regular); line-height: var(--leading-tight); }
+  .feature-card p { font-size: var(--text-sm); color: var(--color-text-on-tile-secondary); }
+  .feature-card .meta { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-3); align-items: center; margin-block-start: var(--space-1); font-size: var(--text-sm); }
+  .feature-card .rating { color: var(--color-text-on-tile-secondary); }
+  .feature-card .rating .icon { color: var(--color-rating-on-tile); }
+  .feature-card .price { font-size: var(--text-xl); font-weight: var(--weight-bold); }
+  .feature-card .link-arrow { color: var(--color-text-on-tile); grid-column: 1 / -1; justify-self: start; }
+  .feature-card .link-arrow:focus-visible { box-shadow: var(--shadow-focus-ring-tile); }
+
+  @media (min-width: 60rem) {
+    .hero { padding-block: var(--space-12) var(--space-16); }
+    .hero-grid { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: var(--space-12); align-items: center; }
+  }
+
+  /* Sections */
+  .section { padding-block: var(--section-gap) 0; }
+  .section-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: var(--space-3) var(--space-8); }
+  .section-head h2 {
+    font-family: var(--font-display); font-weight: var(--weight-regular);
+    font-size: var(--text-3xl); line-height: var(--leading-tight); letter-spacing: var(--tracking-display); max-inline-size: 20ch;
+  }
+  .section-head p { margin-block-start: var(--space-2); color: var(--color-text-secondary); max-inline-size: 52ch; }
+  @media (min-width: 48rem) { .section-head h2 { font-size: var(--text-5xl); } }
+
+  /* Shop by category: one lead tile, the rest quiet, ending on shop all. */
+  .bento { list-style: none; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-3); margin-block-start: var(--space-8); }
+  @media (min-width: 24rem) { .bento { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .bento li { display: flex; min-inline-size: 0; }
+  .cat {
+    flex: 1; display: grid; align-content: space-between; gap: var(--space-4); min-block-size: 9rem; min-inline-size: 0;
+    padding: var(--space-4); border-radius: var(--radius-lg); text-decoration: none; color: var(--color-text-on-tile);
+    transition: transform var(--duration-base) var(--ease-out), box-shadow var(--duration-base) var(--ease-out);
+  }
+  .cat:hover { box-shadow: var(--shadow-lift); transform: translateY(var(--lift-sm)); }
+  .cat:active { transform: none; box-shadow: none; }
+  .cat:focus-visible { box-shadow: var(--shadow-focus-ring); }
+  .cat h3 { font-size: var(--text-lg); font-weight: var(--weight-semibold); line-height: var(--leading-snug); }
+  .cat p { font-size: var(--text-sm); color: var(--color-text-on-tile-secondary); }
+  .cat .go { display: inline-grid; place-items: center; inline-size: var(--size-control-sm); block-size: var(--size-control-sm); border-radius: var(--radius-full); background: var(--color-tile-label-bg); justify-self: end; }
+  .cat-lead { min-block-size: 16rem; padding: var(--space-6); }
+  .cat-lead h3 { font-family: var(--font-display); font-weight: var(--weight-regular); font-size: var(--text-4xl); line-height: var(--leading-tight); }
+  .cat-lead p { font-size: var(--text-base); max-inline-size: 32ch; margin-block-start: var(--space-2); }
+  .cat-lead .row { display: flex; align-items: end; justify-content: space-between; gap: var(--space-4); }
+  .cat-lead .pack { inline-size: var(--size-pack); block-size: auto; }
+  .cat-all { background: var(--color-band-bg); color: var(--color-band-text); }
+  .cat-all p { color: var(--color-band-text-secondary); }
+  .site-footer .logo-word small { color: var(--color-band-text-secondary); }
+  .cat-all .go { background: var(--color-action-band); color: var(--color-text-on-action-band); }
+  .cat-all:focus-visible { box-shadow: var(--shadow-focus-ring); }
+  .bento .lead { grid-column: 1 / -1; }
+  .t-blush { background: var(--tile-blush); } .t-sage { background: var(--tile-sage); } .t-butter { background: var(--tile-butter); }
+  .t-lilac { background: var(--tile-lilac); } .t-sky { background: var(--tile-sky); } .t-peach { background: var(--tile-peach); }
+  @media (min-width: 60rem) {
+    .bento { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-4); }
+    .bento .lead { grid-column: span 2; grid-row: span 3; }
+    .cat-lead { min-block-size: 100%; padding: var(--space-8); }
+    .cat-lead h3 { font-size: var(--text-5xl); }
+    .cat-lead .pack { inline-size: calc(var(--size-pack) * 1.5); }
+  }
+
+  /* Bestsellers */
+  .filters { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-2); margin-block-start: var(--space-6); }
+  .chip {
+    display: inline-flex; align-items: center; gap: var(--space-2); min-block-size: var(--size-control-sm); padding-inline: var(--space-4);
+    border: var(--border-width-thin) solid var(--color-border-strong); border-radius: var(--radius-full);
+    background: transparent; color: var(--color-text-primary); font-size: var(--text-sm); font-weight: var(--weight-medium); cursor: pointer;
+    transition: background-color var(--transition-micro), color var(--transition-micro);
+  }
+  .chip:hover { background: var(--color-interactive-hover-bg); }
+  .chip:active { background: var(--color-interactive-active-bg); }
+  .chip[aria-pressed="true"] { background: var(--color-interactive-selected-bg); color: var(--color-interactive-selected-text); border-color: var(--color-interactive-selected-bg); }
+  .chip .n { font-variant-numeric: tabular-nums; opacity: 0.8; }
+  .result { margin-block-start: var(--space-3); font-size: var(--text-sm); color: var(--color-text-secondary); }
+
+  .products { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-8) var(--space-3); margin-block-start: var(--space-6); }
+  .products > li { display: flex; min-inline-size: 0; }
+  .products > li[hidden] { display: none; }
+  .card { flex: 1; display: grid; grid-template-rows: auto 1fr; gap: var(--space-3); min-inline-size: 0; }
+  .card-media { position: relative; display: grid; place-items: center; aspect-ratio: 4 / 5; border-radius: var(--radius-lg); overflow: hidden; }
+  .card-media .pack { inline-size: 54%; block-size: auto; transition: transform var(--duration-slow) var(--ease-out); }
+  .card:hover .card-media .pack { transform: translateY(var(--lift-md)) scale(1.02); }
+  .badge {
+    position: absolute; inset-block-start: var(--space-3); inset-inline-start: var(--space-3);
+    display: inline-flex; align-items: center; gap: var(--space-1);
+    padding: var(--space-0-5) var(--space-2); border-radius: var(--radius-sm);
+    background: var(--color-tile-label-bg); color: var(--color-text-on-tile); font-size: var(--text-xs); font-weight: var(--weight-semibold);
+  }
+  .wish {
+    position: absolute; inset-block-start: var(--space-2); inset-inline-end: var(--space-2);
+    display: grid; place-items: center; inline-size: var(--size-control-md); block-size: var(--size-control-md);
+    border: 0; border-radius: var(--radius-full); background: var(--color-tile-label-bg); color: var(--color-text-on-tile); cursor: pointer;
+    transition: transform var(--transition-micro);
+  }
+  .wish:hover { transform: scale(1.06); }
+  .wish:active { transform: scale(0.96); }
+  .wish:focus-visible { box-shadow: var(--shadow-focus-ring-tile); }
+  .wish[aria-pressed="true"] .icon { fill: currentColor; }
+  .card-body { display: grid; grid-template-rows: auto auto 1fr auto; gap: var(--space-1); }
+  .brand { font-size: var(--text-xs); font-weight: var(--weight-semibold); letter-spacing: var(--tracking-caps); text-transform: uppercase; color: var(--color-text-secondary); }
+  .card h3 { font-size: var(--text-base); font-weight: var(--weight-semibold); line-height: var(--leading-snug); }
+  .card h3 a { text-decoration: none; border-radius: var(--radius-sm); }
+  .card h3 a:hover { text-decoration: underline; text-underline-offset: 0.2em; }
+  .card h3 a:active { color: var(--color-text-accent); }
+  .card .desc { font-size: var(--text-sm); color: var(--color-text-secondary); display: none; }
+  .buy { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2); margin-block-start: var(--space-2); }
+  .price-row { display: grid; gap: var(--space-0-5); }
+  .price { font-weight: var(--weight-bold); font-size: var(--text-lg); font-variant-numeric: tabular-nums; }
+  .rating { display: inline-flex; align-items: center; gap: var(--space-1); font-size: var(--text-sm); color: var(--color-text-secondary); }
+  .rating .icon { color: var(--color-rating); fill: currentColor; stroke: none; }
+  .add { min-block-size: var(--size-control-md); padding-inline: var(--space-4); font-size: var(--text-sm); }
+  .add[data-added="true"] { border-color: var(--color-feedback-success); color: var(--color-feedback-success); }
+  .add .i-check { display: none; }
+  .add[data-added="true"] .i-check { display: block; }
+  .add[data-added="true"] .i-plus { display: none; }
+  .empty { margin-block-start: var(--space-6); padding: var(--space-8); border: var(--border-width-thin) dashed var(--color-border-strong); border-radius: var(--radius-lg); text-align: center; color: var(--color-text-secondary); }
+  @media (min-width: 48rem) {
+    .products { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-10) var(--space-5); }
+    .card .desc { display: block; }
+  }
+  @media (min-width: 72rem) { .products { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+  /* Rituals band: a day in three bundles, set as a timeline, not three equal cards. */
+  .band { margin-block-start: var(--section-gap); background: var(--color-band-bg); color: var(--color-band-text); padding-block: var(--section-gap); }
+  .band .eyebrow { color: var(--color-band-text-secondary); }
+  .band h2 {
+    margin-block-start: var(--space-3); font-family: var(--font-display); font-weight: var(--weight-regular);
+    font-size: var(--text-4xl); line-height: var(--leading-tight); letter-spacing: var(--tracking-display); max-inline-size: 14ch;
+  }
+  .band .intro p { margin-block-start: var(--space-4); color: var(--color-band-text-secondary); max-inline-size: 40ch; }
+  .band a { color: var(--color-band-text); }
+  .band :focus-visible { box-shadow: var(--shadow-focus-ring-band); }
+  .band-grid { display: grid; gap: var(--space-10); grid-template-columns: minmax(0, 1fr); }
+  .timeline { list-style: none; padding: 0; display: grid; }
+  .step {
+    display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--space-4); align-items: start;
+    padding-block: var(--space-6); border-block-start: var(--border-width-thin) solid var(--color-band-border);
+  }
+  .step:last-child { border-block-end: var(--border-width-thin) solid var(--color-band-border); }
+  .step .when {
+    display: inline-grid; place-items: center; inline-size: var(--size-control-lg); block-size: var(--size-control-lg);
+    border-radius: var(--radius-full); background: var(--color-band-surface);
+  }
+  .step .time { font-size: var(--text-sm); font-weight: var(--weight-semibold); letter-spacing: var(--tracking-caps); text-transform: uppercase; color: var(--color-band-text-secondary); }
+  .step h3 { margin-block-start: var(--space-1); font-size: var(--text-xl); font-weight: var(--weight-semibold); line-height: var(--leading-snug); }
+  .step p { margin-block-start: var(--space-1); color: var(--color-band-text-secondary); max-inline-size: 52ch; }
+  .step .buy { justify-content: start; gap: var(--space-2) var(--space-6); margin-block-start: var(--space-3); }
+  .step .price { font-size: var(--text-lg); }
+  .btn-band { background: var(--color-action-band); color: var(--color-text-on-action-band); }
+  .btn-band:hover { background: var(--color-action-band-hover); }
+  .btn-band:active { background: var(--color-action-band-active); }
+  .band .rating { color: var(--color-band-text-secondary); }
+  @media (min-width: 60rem) {
+    .band-grid { grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: var(--space-16); }
+    .band h2 { font-size: var(--text-6xl); }
+    .band .intro { position: sticky; inset-block-start: var(--space-24); align-self: start; }
+  }
+
+  /* Help: the AI assistant leads, a person on WhatsApp is the quiet second option. */
+  .help-grid { display: grid; gap: var(--space-4); grid-template-columns: minmax(0, 1fr); margin-block-start: var(--space-8); }
+  .ask {
+    display: grid; gap: var(--space-5); padding: var(--space-6); border-radius: var(--radius-xl);
+    background: var(--color-surface-tile);
+  }
+  .ask h3 { display: flex; align-items: center; gap: var(--space-2); font-size: var(--text-xl); font-weight: var(--weight-semibold); }
+  .ask-form { display: grid; gap: var(--space-2); }
+  .ask-form label { font-weight: var(--weight-medium); font-size: var(--text-sm); }
+  .ask-row { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-2); }
+  .ask-row input {
+    inline-size: 100%; min-inline-size: 0; block-size: var(--size-control-lg); padding-inline: var(--space-4);
+    border: var(--border-width-thin) solid var(--color-border-strong); border-radius: var(--radius-md);
+    background: var(--color-surface-card); color: var(--color-text-primary);
+  }
+  .ask-row input::placeholder { color: var(--color-text-secondary); }
+  .ask-row input:hover { border-color: var(--color-text-primary); }
+  .ask-row input[aria-invalid="true"] { border-color: var(--color-border-error); }
+  .ask-row .btn { min-block-size: var(--size-control-lg); border-radius: var(--radius-md); }
+  .field-error { display: flex; align-items: center; gap: var(--space-1); margin-block-start: var(--space-1); font-size: var(--text-sm); color: var(--color-action-destructive); }
+  .field-error[hidden] { display: none; }
+  .suggest { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .suggest .chip { background: var(--color-surface-card); }
+  .suggest .chip:hover { background: var(--color-interactive-hover-bg); }
+  .person {
+    display: grid; align-content: space-between; gap: var(--space-5); padding: var(--space-6);
+    border: var(--border-width-thin) solid var(--color-border-default); border-radius: var(--radius-xl);
+  }
+  .person h3 { font-size: var(--text-xl); font-weight: var(--weight-semibold); }
+  .person p { margin-block-start: var(--space-2); color: var(--color-text-secondary); }
+  .person .links { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-6); }
+  @media (min-width: 48rem) {
+    .ask-row { grid-template-columns: minmax(0, 1fr) auto; }
+    .ask { padding: var(--space-10); }
+    .person { padding: var(--space-10); }
+  }
+  @media (min-width: 60rem) { .help-grid { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); } }
+
+  /* Footer: the page ends on purpose. */
+  .site-footer { margin-block-start: var(--section-gap); background: var(--color-band-bg); color: var(--color-band-text); padding-block: var(--space-16) var(--space-8); }
+  .site-footer a { color: var(--color-band-text); }
+  .site-footer :focus-visible { box-shadow: var(--shadow-focus-ring-band); }
+  .foot-grid { display: grid; gap: var(--space-10); grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .foot-brand { grid-column: 1 / -1; }
+  .foot-brand p { margin-block-start: var(--space-4); color: var(--color-band-text-secondary); max-inline-size: 36ch; }
+  .site-footer h2 { font-size: var(--text-sm); font-weight: var(--weight-semibold); letter-spacing: var(--tracking-caps); text-transform: uppercase; color: var(--color-band-text-secondary); }
+  .site-footer ul { list-style: none; padding: 0; display: grid; gap: var(--space-1); margin-block-start: var(--space-3); }
+  .site-footer ul a { display: inline-flex; align-items: center; min-block-size: var(--size-control-sm); text-decoration: none; border-radius: var(--radius-sm); }
+  .site-footer ul a:hover { text-decoration: underline; text-underline-offset: 0.2em; }
+  .site-footer ul a:active { color: var(--color-band-text-secondary); }
+  .legal {
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-2) var(--space-6);
+    margin-block-start: var(--space-12); padding-block-start: var(--space-6); border-block-start: var(--border-width-thin) solid var(--color-band-border);
+    font-size: var(--text-sm); color: var(--color-band-text-secondary);
+  }
+  @media (min-width: 60rem) {
+    .foot-grid { grid-template-columns: minmax(0, 2fr) repeat(3, minmax(0, 1fr)); }
+    .foot-brand { grid-column: auto; }
+  }
+
+  /* Packshot materials */
+  .pk-amber { --pk-body: var(--pk-amber); --pk-cap: var(--pk-navy); --pk-label: var(--pk-cream); --pk-mark: var(--pk-navy); }
+  .pk-cream { --pk-body: var(--pk-cream); --pk-cap: var(--pk-gold); --pk-label: var(--pk-white); --pk-mark: var(--pk-navy); }
+  .pk-blush { --pk-body: var(--pk-blush); --pk-cap: var(--pk-blush-deep); --pk-label: var(--pk-cream); --pk-mark: var(--pk-navy); }
+  .pk-sage { --pk-body: var(--pk-sage); --pk-cap: var(--pk-sage-deep); --pk-label: var(--pk-cream); --pk-mark: var(--pk-navy); }
+  .pk-ink { --pk-body: var(--pk-ink); --pk-cap: var(--pk-gold); --pk-label: var(--pk-ink-deep); --pk-mark: var(--pk-gold); }
+  .pk-lilac { --pk-body: var(--pk-lilac); --pk-cap: var(--pk-navy); --pk-label: var(--pk-cream); --pk-mark: var(--pk-navy); }
+  .pk-navy { --pk-body: var(--pk-navy); --pk-cap: var(--pk-gold); --pk-label: var(--pk-cream); --pk-mark: var(--pk-navy); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition-duration: 0s !important; animation-duration: 0s !important; scroll-behavior: auto !important; }
+    .cat:hover, .card:hover .card-media .pack, .wish:hover { transform: none; }
+  }
+</style>
+</head>
+<body>
+<svg width="0" height="0" class="sr-only" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7Z"/></symbol>
+    <symbol id="i-bag" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1Z"/></symbol>
+    <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M9.9 15.5A2 2 0 0 0 8.5 14.1l-6.1-1.6a.5.5 0 0 1 0-1l6.1-1.6a2 2 0 0 0 1.4-1.4l1.6-6.1a.5.5 0 0 1 1 0l1.6 6.1a2 2 0 0 0 1.4 1.4l6.1 1.6a.5.5 0 0 1 0 1l-6.1 1.6a2 2 0 0 0-1.4 1.4l-1.6 6.1a.5.5 0 0 1-1 0Z"/><path d="M20 3v4"/><path d="M22 5h-4"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></symbol>
+    <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10Z"/><path d="M2 21c0-3 1.9-5.4 5.1-6"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.7 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1.2 1.2 0 0 1 1.5 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M6.3 17.7l-1.4 1.4M19.1 4.9l-1.4 1.4"/></symbol>
+    <symbol id="i-sunrise" viewBox="0 0 24 24"><path d="M12 2v8M4.9 10.9l1.4 1.4M2 18h2M20 18h2M19.1 10.9l-1.4 1.4M22 22H2M8 6l4-4 4 4M16 18a4 4 0 0 0-8 0"/></symbol>
+    <symbol id="i-zap" viewBox="0 0 24 24"><path d="M4 14a1 1 0 0 1-.8-1.6l9.9-10.2a.5.5 0 0 1 .9.5l-1.9 6A1 1 0 0 0 13 10h7a1 1 0 0 1 .8 1.6l-9.9 10.2a.5.5 0 0 1-.9-.5l1.9-6A1 1 0 0 0 11 14Z"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14M12 5v14"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></symbol>
+
+    <!-- Packshots. Colours come from the pk-* class on the svg. -->
+    <symbol id="pk-dropper" viewBox="0 0 120 180">
+      <ellipse cx="60" cy="172" rx="34" ry="5" fill="var(--pk-shadow)"/>
+      <ellipse cx="60" cy="18" rx="11" ry="14" fill="var(--pk-cap)"/>
+      <rect x="47" y="28" width="26" height="20" rx="4" fill="var(--pk-cap)"/>
+      <rect x="32" y="46" width="56" height="124" rx="14" fill="var(--pk-body)"/>
+      <rect x="40" y="86" width="40" height="54" rx="4" fill="var(--pk-label)"/>
+      <rect x="47" y="98" width="26" height="4" rx="2" fill="var(--pk-mark)"/>
+      <rect x="51" y="108" width="18" height="3" rx="1.5" fill="var(--pk-line)"/>
+      <rect x="38" y="54" width="6" height="100" rx="3" fill="var(--pk-gloss)"/>
+    </symbol>
+    <symbol id="pk-bottle" viewBox="0 0 120 180">
+      <ellipse cx="60" cy="172" rx="40" ry="5" fill="var(--pk-shadow)"/>
+      <rect x="38" y="10" width="44" height="26" rx="5" fill="var(--pk-cap)"/>
+      <rect x="44" y="34" width="32" height="10" rx="2" fill="var(--pk-cap)"/>
+      <rect x="22" y="42" width="76" height="128" rx="18" fill="var(--pk-body)"/>
+      <rect x="30" y="78" width="60" height="60" rx="6" fill="var(--pk-label)"/>
+      <circle cx="60" cy="98" r="8" fill="var(--pk-mark)"/>
+      <rect x="44" y="114" width="32" height="4" rx="2" fill="var(--pk-mark)"/>
+      <rect x="49" y="123" width="22" height="3" rx="1.5" fill="var(--pk-line)"/>
+      <rect x="28" y="52" width="7" height="104" rx="3.5" fill="var(--pk-gloss)"/>
+    </symbol>
+    <symbol id="pk-jar" viewBox="0 0 120 180">
+      <ellipse cx="60" cy="172" rx="48" ry="6" fill="var(--pk-shadow)"/>
+      <rect x="16" y="78" width="88" height="28" rx="7" fill="var(--pk-cap)"/>
+      <rect x="12" y="104" width="96" height="66" rx="16" fill="var(--pk-body)"/>
+      <rect x="28" y="118" width="64" height="36" rx="5" fill="var(--pk-label)"/>
+      <rect x="42" y="128" width="36" height="4" rx="2" fill="var(--pk-mark)"/>
+      <rect x="48" y="138" width="24" height="3" rx="1.5" fill="var(--pk-line)"/>
+      <rect x="18" y="110" width="6" height="52" rx="3" fill="var(--pk-gloss)"/>
+    </symbol>
+    <symbol id="pk-flask" viewBox="0 0 120 180">
+      <ellipse cx="60" cy="172" rx="40" ry="5" fill="var(--pk-shadow)"/>
+      <rect x="44" y="8" width="32" height="34" rx="4" fill="var(--pk-cap)"/>
+      <rect x="52" y="40" width="16" height="14" fill="var(--pk-cap)"/>
+      <rect x="18" y="52" width="84" height="118" rx="24" fill="var(--pk-body)"/>
+      <rect x="36" y="96" width="48" height="30" rx="3" fill="var(--pk-label)"/>
+      <rect x="44" y="106" width="32" height="3" rx="1.5" fill="var(--pk-mark)"/>
+      <rect x="50" y="114" width="20" height="3" rx="1.5" fill="var(--pk-mark)"/>
+      <rect x="26" y="62" width="7" height="96" rx="3.5" fill="var(--pk-gloss)"/>
+    </symbol>
+    <symbol id="pk-tube" viewBox="0 0 120 180">
+      <ellipse cx="60" cy="172" rx="30" ry="5" fill="var(--pk-shadow)"/>
+      <path d="M30 10h60l-8 124H38Z" fill="var(--pk-body)"/>
+      <rect x="28" y="6" width="64" height="8" rx="2" fill="var(--pk-cap)"/>
+      <rect x="40" y="130" width="40" height="40" rx="5" fill="var(--pk-cap)"/>
+      <rect x="44" y="50" width="32" height="56" rx="4" fill="var(--pk-label)"/>
+      <rect x="50" y="62" width="20" height="4" rx="2" fill="var(--pk-mark)"/>
+      <rect x="53" y="72" width="14" height="3" rx="1.5" fill="var(--pk-line)"/>
+    </symbol>
+    <symbol id="pk-pouch" viewBox="0 0 120 180">
+      <ellipse cx="60" cy="172" rx="46" ry="6" fill="var(--pk-shadow)"/>
+      <path d="M22 24h76l4 136a10 10 0 0 1-10 10H28a10 10 0 0 1-10-10Z" fill="var(--pk-body)"/>
+      <rect x="22" y="18" width="76" height="12" rx="3" fill="var(--pk-cap)"/>
+      <rect x="32" y="40" width="56" height="3" rx="1.5" fill="var(--pk-line)"/>
+      <rect x="32" y="74" width="56" height="64" rx="6" fill="var(--pk-label)"/>
+      <circle cx="60" cy="96" r="9" fill="var(--pk-mark)"/>
+      <rect x="44" y="114" width="32" height="4" rx="2" fill="var(--pk-mark)"/>
+    </symbol>
+  </defs>
+</svg>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="logo" href="https://agogostore.net/" aria-label="Agogo Store, home">
+      <svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+        <circle cx="15" cy="18" r="12" fill="var(--color-brand-fruit)"/>
+        <path d="M17 7c2-4 6-5 9-4-1 3-4 5-8 5Z" fill="var(--color-brand-leaf)"/>
+      </svg>
+      <span class="logo-word">Agogo<small>Store</small></span>
+    </a>
+
+    <form class="search" role="search" action="https://agogostore.net/search" method="get">
+      <label class="sr-only" for="q">Search products</label>
+      <svg class="icon lead-icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg>
+      <input id="q" name="q" type="search" autocomplete="off" placeholder="Search serums, collagen, perfume" />
+      <button class="icon-btn go" type="submit" aria-label="Search"><svg class="icon icon-sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></button>
+    </form>
+
+    <div class="tools">
+      <button class="icon-btn theme-btn" type="button" aria-pressed="false" aria-label="Dark theme">
+        <svg class="icon i-moon" aria-hidden="true" focusable="false"><use href="#i-moon"/></svg>
+        <svg class="icon i-sun" aria-hidden="true" focusable="false"><use href="#i-sun"/></svg>
+      </button>
+      <a class="icon-btn" href="https://agogostore.net/account" aria-label="Account"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-user"/></svg></a>
+      <a class="icon-btn" href="https://agogostore.net/wishlist" aria-label="Wishlist, 0 saved" id="wish-link">
+        <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg>
+        <span class="count" id="wish-count" hidden>0</span>
+      </a>
+      <a class="icon-btn" href="https://agogostore.net/cart" aria-label="Bag, 0 items" id="bag-link">
+        <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-bag"/></svg>
+        <span class="count" id="bag-count" hidden>0</span>
+      </a>
+    </div>
+  </div>
+
+  <nav class="cats" aria-label="Categories">
+    <div class="wrap cats-scroll">
+      <ul>
+        <li><a href="https://agogostore.net/" aria-current="page">Home</a></li>
+        <li><a href="https://agogostore.net/category/skincare">Skincare</a></li>
+        <li><a href="https://agogostore.net/category/makeup">Makeup</a></li>
+        <li><a href="https://agogostore.net/category/haircare">Haircare</a></li>
+        <li><a href="https://agogostore.net/category/fragrance">Fragrance</a></li>
+        <li aria-hidden="true" class="sep"></li>
+        <li><a href="https://agogostore.net/category/supplements">Supplements</a></li>
+        <li><a href="https://agogostore.net/category/wellness">Wellness</a></li>
+        <li aria-hidden="true" class="sep"></li>
+        <li><a href="https://agogostore.net/new">New</a></li>
+        <li><a href="https://agogostore.net/bestsellers">Bestsellers</a></li>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow"><svg class="icon icon-sm" aria-hidden="true" focusable="false"><use href="#i-sparkles"/></svg>Beauty and wellness, curated</p>
+        <h1 id="hero-title">Beauty that moves <em>with you</em></h1>
+        <p class="lede">Clean skincare, joyful makeup and daily wellness rituals, chosen by Agogo Store so you can skip the guesswork.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary btn-lg" href="https://agogostore.net/shop">Shop bestsellers<svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
+          <a class="link-arrow" href="#rituals">Find your daily ritual</a>
+        </div>
+        <ul class="proof">
+          <li>
+            <span class="stars" aria-hidden="true">
+              <svg class="icon icon-sm"><use href="#i-star"/></svg><svg class="icon icon-sm"><use href="#i-star"/></svg><svg class="icon icon-sm"><use href="#i-star"/></svg><svg class="icon icon-sm"><use href="#i-star"/></svg><svg class="icon icon-sm"><use href="#i-star"/></svg>
+            </span>
+            <span><strong>4.9 out of 5</strong> from 12,400+ reviews</span>
+          </li>
+          <li><svg class="icon icon-sm" aria-hidden="true" focusable="false"><use href="#i-shield"/></svg>Clean-tested formulas</li>
+          <li><svg class="icon icon-sm" aria-hidden="true" focusable="false"><use href="#i-leaf"/></svg>Cruelty-free</li>
+        </ul>
+      </div>
+
+      <article class="feature" aria-labelledby="feature-title">
+        <span class="feature-tag">Glow from within</span>
+        <div class="feature-stage" aria-hidden="true">
+          <svg class="pack sm pk-cream" viewBox="0 0 120 180" focusable="false"><use href="#pk-jar"/></svg>
+          <svg class="pack pk-blush" viewBox="0 0 120 180" focusable="false"><use href="#pk-bottle"/></svg>
+          <svg class="pack sm pk-amber" viewBox="0 0 120 180" focusable="false"><use href="#pk-dropper"/></svg>
+        </div>
+        <div class="feature-card">
+          <div>
+            <h2 id="feature-title">Beauty Glow</h2>
+            <p>An internal concentrate that brings light back to your complexion.</p>
+            <p class="meta">
+              <span class="rating"><svg class="icon icon-xs" aria-hidden="true" focusable="false"><use href="#i-star"/></svg>4.6</span>
+              <span>Agogo Wellness</span>
+            </p>
+          </div>
+          <span class="price">$79.99</span>
+          <a class="link-arrow" href="https://agogostore.net/product/beauty-glow">See the ritual<svg class="icon icon-sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="cats-title">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2 id="cats-title">Shop by what you need</h2>
+          <p>Six shelves, one standard: every formula is clean-tested and cruelty-free.</p>
+        </div>
+      </div>
+      <ul class="bento">
+        <li class="lead">
+          <a class="cat cat-lead t-sage" href="https://agogostore.net/category/wellness">
+            <div>
+              <h3>Wellness</h3>
+              <p>Herbal blends, collagen and bundles for balance, energy and rest.</p>
+            </div>
+            <div class="row">
+              <span class="go" aria-hidden="true"><svg class="icon" focusable="false"><use href="#i-arrow"/></svg></span>
+              <svg class="pack pk-sage" viewBox="0 0 120 180" aria-hidden="true" focusable="false"><use href="#pk-bottle"/></svg>
+            </div>
+          </a>
+        </li>
+        <li><a class="cat t-blush" href="https://agogostore.net/category/skincare"><div><h3>Skincare</h3><p>Cleansers, serums, moisturizers</p></div><span class="go" aria-hidden="true"><svg class="icon icon-sm" focusable="false"><use href="#i-arrow"/></svg></span></a></li>
+        <li><a class="cat t-peach" href="https://agogostore.net/category/makeup"><div><h3>Makeup</h3><p>Foundation, lipstick, essentials</p></div><span class="go" aria-hidden="true"><svg class="icon icon-sm" focusable="false"><use href="#i-arrow"/></svg></span></a></li>
+        <li><a class="cat t-butter" href="https://agogostore.net/category/supplements"><div><h3>Supplements</h3><p>Vitamins, minerals, daily support</p></div><span class="go" aria-hidden="true"><svg class="icon icon-sm" focusable="false"><use href="#i-arrow"/></svg></span></a></li>
+        <li><a class="cat t-sky" href="https://agogostore.net/category/haircare"><div><h3>Haircare</h3><p>Shampoos, conditioners, treatments</p></div><span class="go" aria-hidden="true"><svg class="icon icon-sm" focusable="false"><use href="#i-arrow"/></svg></span></a></li>
+        <li><a class="cat t-lilac" href="https://agogostore.net/category/fragrance"><div><h3>Fragrance</h3><p>Perfumes and body mists</p></div><span class="go" aria-hidden="true"><svg class="icon icon-sm" focusable="false"><use href="#i-arrow"/></svg></span></a></li>
+        <li><a class="cat cat-all" href="https://agogostore.net/shop"><div><h3>Shop everything</h3><p>The full catalog in one place</p></div><span class="go" aria-hidden="true"><svg class="icon icon-sm" focusable="false"><use href="#i-arrow"/></svg></span></a></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="best-title">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2 id="best-title">Bestsellers this month</h2>
+          <p>Ranked by what customers reorder most.</p>
+        </div>
+        <a class="link-arrow" href="https://agogostore.net/bestsellers">View all bestsellers<svg class="icon icon-sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
+      </div>
+
+      <ul class="filters" aria-label="Filter bestsellers">
+        <li><button class="chip" type="button" aria-pressed="true" data-filter="all">All <span class="n">8</span></button></li>
+        <li><button class="chip" type="button" aria-pressed="false" data-filter="wellness">Wellness <span class="n">4</span></button></li>
+        <li><button class="chip" type="button" aria-pressed="false" data-filter="supplements">Supplements <span class="n">3</span></button></li>
+        <li><button class="chip" type="button" aria-pressed="false" data-filter="fragrance">Fragrance <span class="n">1</span></button></li>
+      </ul>
+      <p class="result" id="result" aria-live="polite">Showing 8 products</p>
+
+      <ul class="products" id="products">
+        <li data-cat="wellness">
+          <article class="card">
+            <div class="card-media t-sage">
+              <span class="badge"><svg class="icon icon-xs" aria-hidden="true" focusable="false"><use href="#i-star"/></svg>Top rated</span>
+              <button class="wish" type="button" aria-pressed="false" aria-label="Save Energy Bundle to wishlist"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>
+              <svg class="pack pk-sage" viewBox="0 0 120 180" aria-hidden="true" focusable="false"><use href="#pk-pouch"/></svg>
+            </div>
+            <div class="card-body">
+              <p class="brand">Agogo Wellness</p>
+              <h3><a href="https://agogostore.net/product/energy-bundle-strength-hydration-recovery">Energy Bundle: Strength, Hydration and Recovery</a></h3>
+              <p class="desc">Sustained vitality, deeper hydration and physical restoration.</p>
+              <div class="buy">
+                <div class="price-row"><span class="price">$59.99</span><span class="rating"><svg class="icon icon-xs" aria-hidden="true" focusable="false"><use href="#i-star"/></svg>4.9</span></div>
+                <button class="btn btn-secondary add" type="button" data-name="Energy Bundle"><svg class="icon icon-sm i-plus" aria-hidden="true" focusable="false"><use href="#i-plus"/></svg><svg class="icon icon-sm i-check" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Add</span></button>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li data-cat="wellness">
+          <article class="card">
+            <div class="card-media t-blush">
+              <span class="badge"><svg class="icon icon-xs" aria-hidden="true" focusable="false"><use href="#i-star"/></svg>Top rated</span>
+              <button class="wish" type="button" aria-pressed="false" aria-label="Save Woman Balance to wishlist"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>
+              <svg class="pack pk-blush" viewBox="0 0 120 180" aria-hidden="true" focusable="false"><use href="#pk-bottle"/></svg>
+            </div>
+            <div class="card-body">
+              <p class="brand">Agogo Wellness</p>
+              <h3><a href="https://agogostore.net/product/woman-balance">Woman Balance</a></h3>
+              <p class="desc">Botanical support to restore your natural rhythm.</p>
+              <div class="buy">
+                <div class="price-row"><span class="price">$49.99</span><span class="rating"><svg class="icon icon-xs" aria-hidden="true" focusable="false"><use href="#i-star"/></svg>4.9</span></div>
+                <button class="btn btn-secondary add" type="button" data-name="Woman Balance"><svg class="icon icon-sm i-plus" aria-hidden="true" focusable="false"><use href="#i-plus"/></svg><svg class="icon icon-sm i-check" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Add</span></button>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li data-cat="fragrance">
+          <article class="card">
+            <div class="card-media t-lilac">
+              <span class="badge">For winter evenings</span>
+              <button class="wish" type="button" aria-pressed="false" aria-label="Save Smoke and Ember Perfume to wishlist"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>
+              <svg class="pack pk-ink" viewBox="0 0 120 180" aria-hidden="true" focusable="false"><use href="#pk-flask"/></svg>
+            </div>
+            <div class="card-body">
+              <p class="brand">Agogo Homme</p>
+              <h3><a href="https://agogostore.net/product/smoke-ember-perfume">Smoke and Ember Perfume</a></h3>
+              <p class="desc">A smoky, warm perfume for winter evenings.</p>
+              <div class="buy">
+                <div class="price-row"><span class="price">$110.00</span><span class="rating"><svg class="icon icon-xs" aria-hidden="true" focusable="false"><use href="#i-star"/></svg>4.9</span></div>
+                <button class="btn btn-secondary add" type="button" data-name="Smoke and Ember Perfume"><svg class="icon icon-sm i-plus" aria-hidden="true" focusable="false"><use href="#i-plus"/></svg><svg class="icon icon-sm i-check" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Add</span></button>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li data-cat="supplements">
+          <article class="card">
+            <div class="card-media t-butter">
+              <span class="badge">Bundle of 3</span>
+              <button class="wish" type="button" aria-pressed="false" aria-label="Save Daily Health Bundle to wishlist"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>
+              <svg class="pack pk-amber" viewBox="0 0 120 180" aria-hidden="true" focusable="false"><use href="#pk-bottle"/></svg>
+            </div>
+            <div class="card-body">
+              <p class="brand">Agogo Wellness</p>
+              <h3><a href="https://agogostore.net/product/daily-health-bundle-vitality-defense-balance">Daily Health Bundle: Vitality, Defense and Balance</a></h3>
+              <p class="desc">Immunity, energy and a steadier mood in one trio.</p>
+              <div class="buy">
+                <div class="price-row"><span class="price">$69.99</span><span class="rating"><svg class="icon icon-xs" aria-hidden="true" focusable="false"><use href="#i-star"/></svg>4.8</span></div>
+                <button class="btn btn-secondary add" type="button" data-name="Daily Health Bundle"><svg class="icon icon-sm i-plus" aria-hidden="true" focusable="false"><use href="#i-plus"/></svg><svg class="icon icon-sm i-check" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Add</span></button>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li data-cat="wellness">
+          <article class="card">
+            <div class="card-media t-sky">
+              <button class="wish" type="button" aria-pressed="false" aria-label="Save Bundles Cleanse to wishlist"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>
+              <svg class="pack pk-navy" viewBox="0 0 120 180" aria-hidden="true" focusable="false"><use href="#pk-jar"/></svg>
+            </div>
+            <div class="card-body">
+              <p class="brand">Agogo Wellness</p>
+              <h3><a href="https://agogostore.net/product/bundles-cleanse">Bundles Cleanse</a></h3>
+              <p class="desc">An internal reset for clarity and vitality.</p>
+              <div class="buy">
+                <div class="price-row"><span class="price">$210.00</span><span class="rating"><svg class="icon icon-xs" aria-hidden="true" focusable="false"><use href="#i-star"/></svg>4.7</span></div>
+                <button class="btn btn-secondary add" type="button" data-name="Bundles Cleanse"><svg class="icon icon-sm i-plus" aria-hidden="true" focusable="false"><use href="#i-plus"/></svg><svg class="icon icon-sm i-check" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Add</span></button>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li data-cat="supplements">
+          <article class="card">
+            <div class="card-media t-peach">
+              <button class="wish" type="button" aria-pressed="false" aria-label="Save Woman Glow to wishlist"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>
+              <svg class="pack pk-amber" viewBox="0 0 120 180" aria-hidden="true" focusable="false"><use href="#pk-dropper"/></svg>
+            </div>
+            <div class="card-body">
+              <p class="brand">Agogo Wellness</p>
+              <h3><a href="https://agogostore.net/product/woman-glow">Woman Glow</a></h3>
+              <p class="desc">A daily ritual for vibrant skin and inner balance.</p>
+              <div class="buy">
+                <div class="price-row"><span class="price">$39.99</span><span class="rating"><svg class="icon icon-xs" aria-hidden="true" focusable="false"><use href="#i-star"/></svg>4.7</span></div>
+                <button class="btn btn-secondary add" type="button" data-name="Woman Glow"><svg class="icon icon-sm i-plus" aria-hidden="true" focusable="false"><use href="#i-plus"/></svg><svg class="icon icon-sm i-check" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Add</span></button>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li data-cat="wellness">
+          <article class="card">
+            <div class="card-media t-blush">
+              <button class="wish" type="button" aria-pressed="false" aria-label="Save Beauty Glow to wishlist"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>
+              <svg class="pack pk-cream" viewBox="0 0 120 180" aria-hidden="true" focusable="false"><use href="#pk-jar"/></svg>
+            </div>
+            <div class="card-body">
+              <p class="brand">Agogo Wellness</p>
+              <h3><a href="https://agogostore.net/product/beauty-glow">Beauty Glow</a></h3>
+              <p class="desc">An internal concentrate that brightens from within.</p>
+              <div class="buy">
+                <div class="price-row"><span class="price">$79.99</span><span class="rating"><svg class="icon icon-xs" aria-hidden="true" focusable="false"><use href="#i-star"/></svg>4.6</span></div>
+                <button class="btn btn-secondary add" type="button" data-name="Beauty Glow"><svg class="icon icon-sm i-plus" aria-hidden="true" focusable="false"><use href="#i-plus"/></svg><svg class="icon icon-sm i-check" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Add</span></button>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li data-cat="supplements">
+          <article class="card">
+            <div class="card-media t-sky">
+              <button class="wish" type="button" aria-pressed="false" aria-label="Save Creatine Monohydrate Powder to wishlist"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>
+              <svg class="pack pk-cream" viewBox="0 0 120 180" aria-hidden="true" focusable="false"><use href="#pk-pouch"/></svg>
+            </div>
+            <div class="card-body">
+              <p class="brand">Agogo Wellness</p>
+              <h3><a href="https://agogostore.net/product/creatine-monohydrate-powder">Creatine Monohydrate Powder</a></h3>
+              <p class="desc">Micronized powder for strength and focus.</p>
+              <div class="buy">
+                <div class="price-row"><span class="price">$39.99</span><span class="rating"><svg class="icon icon-xs" aria-hidden="true" focusable="false"><use href="#i-star"/></svg>4.3</span></div>
+                <button class="btn btn-secondary add" type="button" data-name="Creatine Monohydrate Powder"><svg class="icon icon-sm i-plus" aria-hidden="true" focusable="false"><use href="#i-plus"/></svg><svg class="icon icon-sm i-check" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Add</span></button>
+              </div>
+            </div>
+          </article>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="band" id="rituals" aria-labelledby="rituals-title">
+    <div class="wrap band-grid">
+      <div class="intro">
+        <p class="eyebrow">Rituals, not routines</p>
+        <h2 id="rituals-title">One day, three bundles</h2>
+        <p>Each bundle is built for a moment of the day, so you know what to take and when.</p>
+      </div>
+      <ol class="timeline">
+        <li class="step">
+          <span class="when" aria-hidden="true"><svg class="icon" focusable="false"><use href="#i-sunrise"/></svg></span>
+          <div>
+            <p class="time">Morning</p>
+            <h3>Daily Health Bundle</h3>
+            <p>Vitality, defense and balance: a foundational trio to start the day with steady energy.</p>
+            <div class="buy">
+              <span class="price">$69.99</span>
+              <span class="rating"><svg class="icon icon-xs" aria-hidden="true" focusable="false"><use href="#i-star"/></svg>4.8</span>
+              <a class="link-arrow" href="https://agogostore.net/product/daily-health-bundle-vitality-defense-balance">See what is inside</a>
+            </div>
+          </div>
+        </li>
+        <li class="step">
+          <span class="when" aria-hidden="true"><svg class="icon" focusable="false"><use href="#i-zap"/></svg></span>
+          <div>
+            <p class="time">Afternoon</p>
+            <h3>Energy Bundle</h3>
+            <p>Strength, hydration and recovery for training days and long afternoons.</p>
+            <div class="buy">
+              <span class="price">$59.99</span>
+              <span class="rating"><svg class="icon icon-xs" aria-hidden="true" focusable="false"><use href="#i-star"/></svg>4.9</span>
+              <a class="link-arrow" href="https://agogostore.net/product/energy-bundle-strength-hydration-recovery">See what is inside</a>
+            </div>
+          </div>
+        </li>
+        <li class="step">
+          <span class="when" aria-hidden="true"><svg class="icon" focusable="false"><use href="#i-moon"/></svg></span>
+          <div>
+            <p class="time">Evening</p>
+            <h3>Sleep Bundle</h3>
+            <p>Relaxation, calm and restorative rest: an evening ritual that quiets the mind.</p>
+            <div class="buy">
+              <span class="price">$59.99</span>
+              <span class="rating"><svg class="icon icon-xs" aria-hidden="true" focusable="false"><use href="#i-star"/></svg>4.5</span>
+              <a class="link-arrow" href="https://agogostore.net/product/sleep-bundle-relaxation-calm-restorative-rest">See what is inside</a>
+            </div>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="help-title">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2 id="help-title">Not sure where to start?</h2>
+          <p>Tell us your goal and get a short list of products that fit it.</p>
+        </div>
+      </div>
+      <div class="help-grid">
+        <div class="ask">
+          <h3><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-sparkles"/></svg>Ask Agogo AI</h3>
+          <form class="ask-form" id="ask-form" action="https://agogostore.net/assistant" method="get" novalidate>
+            <label for="ask">What would you like help with?</label>
+            <div class="ask-row">
+              <input id="ask" name="q" type="text" placeholder="For example: a gentle routine for dry skin" aria-describedby="ask-error" />
+              <button class="btn btn-primary" type="submit">Get suggestions</button>
+            </div>
+            <p class="field-error" id="ask-error" hidden><svg class="icon icon-sm" aria-hidden="true" focusable="false"><use href="#i-alert"/></svg>Type a question first, or pick one of the examples below.</p>
+          </form>
+          <ul class="suggest" aria-label="Example questions">
+            <li><button class="chip" type="button" data-q="Which collagen is right for me?">Which collagen is right for me?</button></li>
+            <li><button class="chip" type="button" data-q="Help me sleep better">Help me sleep better</button></li>
+            <li><button class="chip" type="button" data-q="A gift under $60">A gift under $60</button></li>
+          </ul>
+        </div>
+        <div class="person">
+          <div>
+            <h3>Prefer a person?</h3>
+            <p>Our team answers product and order questions on WhatsApp.</p>
+          </div>
+          <div class="links">
+            <a class="link-arrow" href="https://agogostore.net/whatsapp"><svg class="icon icon-sm" aria-hidden="true" focusable="false"><use href="#i-chat"/></svg>Chat on WhatsApp</a>
+            <a class="link-arrow" href="https://agogostore.net/account/orders">Track an order</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="logo" href="https://agogostore.net/" aria-label="Agogo Store, home">
+          <svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+            <circle cx="15" cy="18" r="12" fill="var(--color-brand-fruit)"/>
+            <path d="M17 7c2-4 6-5 9-4-1 3-4 5-8 5Z" fill="var(--color-brand-leaf)"/>
+          </svg>
+          <span class="logo-word">Agogo<small>Store</small></span>
+        </a>
+        <p>Clean skincare, joyful makeup and wellness rituals, thoughtfully curated.</p>
+      </div>
+      <nav aria-labelledby="f-shop">
+        <h2 id="f-shop">Shop</h2>
+        <ul>
+          <li><a href="https://agogostore.net/category/skincare">Skincare</a></li>
+          <li><a href="https://agogostore.net/category/makeup">Makeup</a></li>
+          <li><a href="https://agogostore.net/category/supplements">Supplements</a></li>
+          <li><a href="https://agogostore.net/category/wellness">Wellness</a></li>
+        </ul>
+      </nav>
+      <nav aria-labelledby="f-help">
+        <h2 id="f-help">Help</h2>
+        <ul>
+          <li><a href="https://agogostore.net/account/orders">Track an order</a></li>
+          <li><a href="https://agogostore.net/faq">Questions and answers</a></li>
+          <li><a href="https://agogostore.net/contact">Contact us</a></li>
+        </ul>
+      </nav>
+      <nav aria-labelledby="f-about">
+        <h2 id="f-about">Agogo</h2>
+        <ul>
+          <li><a href="https://agogostore.net/about">Our standards</a></li>
+          <li><a href="https://agogostore.net/privacy">Privacy</a></li>
+          <li><a href="https://agogostore.net/terms">Terms</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="legal">
+      <p>Agogo Store</p>
+      <p>Supplements are not intended to diagnose, treat or cure any condition.</p>
+    </div>
+  </div>
+</footer>
+
+<p class="sr-only" id="announce" aria-live="polite"></p>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var announce = document.getElementById('announce');
+  function say(text) { announce.textContent = ''; window.setTimeout(function () { announce.textContent = text; }, 30); }
+
+  /* Theme */
+  var themeBtn = document.querySelector('.theme-btn');
+  function syncTheme() { themeBtn.setAttribute('aria-pressed', String(root.getAttribute('data-theme') === 'dark')); }
+  syncTheme();
+  themeBtn.addEventListener('click', function () {
+    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('agogo-theme', next); } catch (e) {}
+    syncTheme();
+  });
+
+  /* Bag */
+  var bag = 0;
+  var bagCount = document.getElementById('bag-count');
+  var bagLink = document.getElementById('bag-link');
+  document.querySelectorAll('.add').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      bag += 1;
+      bagCount.textContent = String(bag);
+      bagCount.hidden = false;
+      bagLink.setAttribute('aria-label', 'Bag, ' + bag + (bag === 1 ? ' item' : ' items'));
+      btn.setAttribute('data-added', 'true');
+      btn.querySelector('span').textContent = 'Added';
+      say(btn.getAttribute('data-name') + ' added to your bag. ' + bag + (bag === 1 ? ' item' : ' items') + ' in bag.');
+      window.clearTimeout(btn._t);
+      btn._t = window.setTimeout(function () {
+        btn.removeAttribute('data-added');
+        btn.querySelector('span').textContent = 'Add';
+      }, 1800);
+    });
+  });
+
+  /* Wishlist */
+  var saved = 0;
+  var wishCount = document.getElementById('wish-count');
+  var wishLink = document.getElementById('wish-link');
+  document.querySelectorAll('.wish').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var on = btn.getAttribute('aria-pressed') !== 'true';
+      btn.setAttribute('aria-pressed', String(on));
+      saved += on ? 1 : -1;
+      wishCount.textContent = String(saved);
+      wishCount.hidden = saved === 0;
+      wishLink.setAttribute('aria-label', 'Wishlist, ' + saved + ' saved');
+    });
+  });
+
+  /* Bestseller filter */
+  var chips = document.querySelectorAll('.filters .chip');
+  var items = document.querySelectorAll('#products > li');
+  var result = document.getElementById('result');
+  chips.forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      var f = chip.getAttribute('data-filter');
+      chips.forEach(function (c) { c.setAttribute('aria-pressed', String(c === chip)); });
+      var shown = 0;
+      items.forEach(function (li) {
+        var match = f === 'all' || li.getAttribute('data-cat') === f;
+        li.hidden = !match;
+        if (match) shown += 1;
+      });
+      result.textContent = 'Showing ' + shown + (shown === 1 ? ' product' : ' products');
+    });
+  });
+
+  /* Ask Agogo AI */
+  var form = document.getElementById('ask-form');
+  var input = document.getElementById('ask');
+  var err = document.getElementById('ask-error');
+  form.addEventListener('submit', function (e) {
+    if (!input.value.trim()) {
+      e.preventDefault();
+      input.setAttribute('aria-invalid', 'true');
+      err.hidden = false;
+      input.focus();
+    }
+  });
+  input.addEventListener('input', function () {
+    if (input.value.trim()) { input.removeAttribute('aria-invalid'); err.hidden = true; }
+  });
+  document.querySelectorAll('.suggest .chip').forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      input.value = chip.getAttribute('data-q');
+      input.removeAttribute('aria-invalid');
+      err.hidden = true;
+      input.focus();
+    });
+  });
+})();
+</script>
+</body>
+</html>

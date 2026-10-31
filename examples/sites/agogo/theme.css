@@ -1,0 +1,249 @@
+/* Agogo Store theme: the one source of truth for the home page redesign.
+
+   Brand read from the live home page (screenshot, October 2026): a navy wordmark,
+   an orange fruit mark and orange calls to action, a warm cream canvas, and a
+   high-contrast serif for the hero statement. The redesign keeps all four and fixes
+   what the current page gets wrong at the token level.
+
+   Adaptations, stated on purpose:
+   - The live orange call to action (sampled near #F26B21) carries white text at
+     about 3.0:1, which fails WCAG AA for a 18px label. The action orange is
+     deepened to #B83C0B (white text 5.69:1). The bright orange survives only as a
+     decorative fruit mark, never behind text.
+   - Navy #182B5C is the ink (12.68:1 on the cream page) and the band colour.
+   - Secondary text #4E5468 holds 6.32:1 even on the warm tile.
+   - Product tiles are studio colours (blush, sage, butter, lilac, sky, peach). They
+     keep their lightness in dark mode, the way product photography keeps its
+     backdrop, and text on them is always the navy ink.
+   - Dark mode is designed, not inverted: a navy-black canvas, cream ink, and the
+     orange action flips to a light orange with dark text (7.94:1).
+   - Spacing on the 4px scale, type on the Major Third scale. */
+
+:root {
+  color-scheme: light;
+
+  /* surfaces */
+  --color-surface-page: #fbf6ee;
+  --color-surface-card: #fffdf9;
+  --color-surface-tile: #f4eadb;
+  --color-surface-raised: #fffdf9;
+  --color-surface-chip: #efe3d1;
+  --color-band-bg: #182b5c;
+  --color-band-text: #fbf6ee;
+  --color-band-text-secondary: #c9cedc;
+  --color-band-border: #34477a;
+  --color-band-surface: #22376e;
+
+  /* text */
+  --color-text-primary: #182b5c;
+  --color-text-secondary: #4e5468;
+  --color-text-link: #182b5c;
+  --color-text-accent: #9b3208;
+
+  /* actions */
+  --color-action-primary: #b83c0b;
+  --color-action-primary-hover: #9b3208;
+  --color-action-primary-active: #822905;
+  --color-text-on-action: #ffffff;
+  --color-action-band: #fbf6ee;
+  --color-action-band-hover: #ffe4d2;
+  --color-action-band-active: #f6d2bb;
+  --color-text-on-action-band: #182b5c;
+  --color-interactive-hover-bg: #f2e7d6;
+  --color-interactive-active-bg: #eadbc5;
+  --color-interactive-selected-bg: #182b5c;
+  --color-interactive-selected-text: #fbf6ee;
+  --color-action-destructive: #b42318;
+
+  /* brand mark: decorative only, never behind text */
+  --color-brand-fruit: #f26b21;
+  --color-brand-leaf: #e8a317;
+
+  /* borders */
+  --color-border-default: #e6d9c5;
+  --color-border-strong: #7d7466;
+  --color-border-error: #b42318;
+
+  /* feedback */
+  --color-feedback-success: #2f6b3a;
+  --color-rating: #b8650b;
+
+  /* product studio surfaces, constant across themes */
+  --tile-blush: #f2d9d2;
+  --tile-sage: #dde6d6;
+  --tile-butter: #f3e7c6;
+  --tile-lilac: #e4dcee;
+  --tile-sky: #d8e3ef;
+  --tile-peach: #f6dcc8;
+  --color-text-on-tile: #182b5c;
+  --color-text-on-tile-secondary: #3f465c;
+  --color-tile-label-bg: #fffdf9;
+  --color-rating-on-tile: #b8650b;
+
+  /* packshot materials */
+  --pk-amber: #b8650b;
+  --pk-amber-deep: #8a4a07;
+  --pk-cream: #fbf3e4;
+  --pk-blush: #e7a99b;
+  --pk-blush-deep: #c97f70;
+  --pk-sage: #8fa886;
+  --pk-sage-deep: #6c8763;
+  --pk-ink: #23263a;
+  --pk-ink-deep: #14162a;
+  --pk-navy: #182b5c;
+  --pk-gold: #d8b25c;
+  --pk-lilac: #a998c6;
+  --pk-white: #fffdf9;
+  --pk-line: rgba(24, 43, 92, 0.35);
+  --pk-shadow: rgba(24, 43, 92, 0.14);
+  --pk-gloss: rgba(255, 255, 255, 0.45);
+
+  /* type */
+  --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --text-5xl: 3rem;
+  --text-6xl: 3.75rem;
+  --text-7xl: 4.5rem;
+  --text-display: 2.75rem;
+  --leading-display: 1.04;
+  --leading-tight: 1.15;
+  --leading-snug: 1.3;
+  --leading-normal: 1.5;
+  --tracking-display: -0.02em;
+  --tracking-caps: 0.08em;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+  --measure: 65ch;
+
+  /* spacing, 4px base */
+  --space-0-5: 0.125rem;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+  --gutter: var(--space-4);
+  --section-gap: var(--space-16);
+
+  /* radii, varied by component size */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1.25rem;
+  --radius-xl: 1.75rem;
+  --radius-full: 999rem;
+
+  --border-width-thin: 1px;
+  --border-width-medium: 0.125rem;
+
+  /* sizing */
+  --size-control-sm: 2.25rem;
+  --size-control-md: 2.75rem;
+  --size-control-lg: 3.25rem;
+  --size-icon-xs: 0.875rem;
+  --size-icon-sm: 1rem;
+  --size-icon-md: 1.25rem;
+  --size-icon-lg: 1.5rem;
+  --size-badge: 1.25rem;
+  --size-mark: 2rem;
+  --size-container: 80rem;
+  --size-search: 40rem;
+  --size-pack: 7.5rem;
+  --size-pack-hero: 11rem;
+
+  /* depth: flat by default, one quiet lift */
+  --shadow-lift: 0 1px 2px rgba(24, 43, 92, 0.06), 0 10px 28px rgba(24, 43, 92, 0.08);
+  --shadow-focus-ring: 0 0 0 2px var(--color-surface-page), 0 0 0 4px var(--color-text-primary);
+  --shadow-focus-ring-tile: 0 0 0 2px var(--color-tile-label-bg), 0 0 0 4px var(--color-text-on-tile);
+  --lift-sm: -2px;
+  --lift-md: -4px;
+  --shadow-focus-ring-band: 0 0 0 2px var(--color-band-bg), 0 0 0 4px var(--color-band-text);
+
+  /* motion */
+  --duration-fast: 140ms;
+  --duration-base: 220ms;
+  --duration-slow: 320ms;
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.45, 0.05, 0.55, 0.95);
+  --transition-micro: var(--duration-fast) var(--ease-out);
+
+  --opacity-disabled: 0.5;
+  --z-header: 20;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --color-surface-page: #131726;
+  --color-surface-card: #1c2135;
+  --color-surface-tile: #232943;
+  --color-surface-raised: #1c2135;
+  --color-surface-chip: #2a3150;
+  --color-band-bg: #0d1120;
+  --color-band-text: #f5efe6;
+  --color-band-text-secondary: #b7bccb;
+  --color-band-border: #2c3352;
+  --color-band-surface: #1a1f33;
+
+  --color-text-primary: #f5efe6;
+  --color-text-secondary: #b7bccb;
+  --color-text-link: #f5efe6;
+  --color-text-accent: #ffb088;
+
+  --color-action-primary: #ff8a4c;
+  --color-action-primary-hover: #ffa574;
+  --color-action-primary-active: #ffbf9c;
+  --color-text-on-action: #1a1206;
+  --color-action-band: #f5efe6;
+  --color-action-band-hover: #ffe4d2;
+  --color-action-band-active: #f6d2bb;
+  --color-text-on-action-band: #131726;
+  --color-interactive-hover-bg: #262c48;
+  --color-interactive-active-bg: #2f3656;
+  --color-interactive-selected-bg: #f5efe6;
+  --color-interactive-selected-text: #131726;
+  --color-action-destructive: #ff8f7a;
+
+  --color-border-default: #2f3656;
+  --color-border-strong: #8d93a8;
+  --color-border-error: #ff8f7a;
+
+  --color-feedback-success: #8fcf9a;
+  --color-rating: #ffb547;
+
+  --shadow-lift: 0 1px 2px rgba(0, 0, 0, 0.3), 0 10px 28px rgba(0, 0, 0, 0.35);
+}
+
+@media (min-width: 48rem) {
+  :root {
+    --text-display: 3.75rem;
+    --gutter: var(--space-8);
+    --section-gap: var(--space-20);
+    --size-pack-hero: 13rem;
+  }
+}
+
+@media (min-width: 80rem) {
+  :root {
+    --text-display: 4.5rem;
+    --gutter: var(--space-10);
+    --section-gap: var(--space-24);
+    --size-pack-hero: 15rem;
+  }
+}
